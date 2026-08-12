@@ -1,0 +1,14 @@
+{
+    "name": "harindujayakody/deep-link",
+    "description": "Smart mobile deep link generator for iOS App Links and Android Universal Links.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Harindu Jayakody"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    }
+}
