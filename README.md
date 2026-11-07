@@ -18,7 +18,7 @@ Instead of creating 3 different links for different phones, **you only share ONE
 
 ## 🧰 What You Need Before You Start
 
-To run this script, you need **PHP** installed on your computer or web host. PHP is a language that web servers use to run code before sending a webpage to your screen.
+To run this script, you need **PHP 7.4 or newer** installed on your computer or web host. PHP is a language that web servers use to run code before sending a webpage to your screen.
 
 ### Do I have PHP?
 Open your terminal (Command Prompt on Windows, or Terminal on Mac) and type:
@@ -51,7 +51,8 @@ Here is what is inside this repository:
 ### Step 1: Download or Clone this Project
 Download the project as a `.zip` file from GitHub and unzip it, or run:
 ```bash
-git clone https://github.com/your-username/deep-link.git
+git clone https://github.com/harindujayakody/deep-link.git
+cd deep-link
 ```
 
 ### Step 2: Open `sample.php` and Change the Links
@@ -85,7 +86,7 @@ Open your terminal inside the folder containing `sample.php` and run:
 php -S localhost:8000
 ```
 
-You will see a message like:
+Leave this terminal open while testing. Press `Ctrl+C` to stop the server. You will see a message like:
 ```text
 Development Server (http://localhost:8000) started
 ```
@@ -100,7 +101,7 @@ http://localhost:8000/sample.php
 - If you want to test how an iPhone or Android sees it without a real phone:
   1. Press `F12` in Chrome/Edge to open **Developer Tools**.
   2. Click the **Toggle Device Toolbar** icon (or press `Ctrl + Shift + M`).
-  3. Select **iPhone 12** or **Pixel 7** from the top drop-down menu.
+  3. Select an iPhone or Android device from the top drop-down menu. Confirm that device emulation also changes the User-Agent; changing screen size alone does not change the redirect.
   4. Reload `http://localhost:8000/sample.php`!
 
 ---
@@ -109,7 +110,7 @@ http://localhost:8000/sample.php
 
 When you are ready for real users to use your deep link:
 
-1. Upload `sample.php` to your web hosting account (cPanel, Hostinger, Bluehost, AWS, etc.).
+1. Use a PHP-enabled web host; static hosting alone cannot execute this script. Upload `sample.php` to your web hosting account (cPanel, Hostinger, Bluehost, AWS, etc.).
 2. You can rename `sample.php` to `index.php` inside a subfolder (like `https://yourwebsite.com/link/`).
 3. Now whenever someone visits `https://yourwebsite.com/link/`, they will instantly be redirected to the right app store or page!
 
@@ -136,3 +137,4 @@ When you are ready for real users to use your deep link:
 
 ## 🤝 Need Help?
 If you run into any issues, feel free to open an **Issue** on GitHub!
+
