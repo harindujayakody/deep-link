@@ -1,140 +1,30 @@
-# 🚀 Smart Mobile Deep Linker
+# User-Agent Redirect
 
-> A simple, lightweight PHP script that acts like a **smart traffic cop** for your website links! It automatically sends iPhone users, Android users, and computer users to the right app store, app link, or webpage.
+This PHP script selects a configured destination using the request's User-Agent: iPhone/iPad/iPod, Android, or a fallback for all other visitors. User-Agent detection is approximate; for example, some iPads report a desktop User-Agent.
 
----
+This is a redirect, not an implementation of iOS Universal Links or Android App Links. Those require separate association files, domain hosting, and app configuration. A configured target may point to an already configured Universal Link, App Link, app store, or Android intent.
 
-## 🎯 What Does This Script Do?
+## Setup
 
-Imagine you have a single link to share on social media or in an email. 
-When someone clicks that link:
-- 📱 **iPhone / iPad users** get sent to your iOS App Store page or Universal Link.
-- 🤖 **Android users** get sent to your Google Play Store page or Chrome Intent Link.
-- 💻 **Laptop / Desktop users** get sent to your regular website.
+Install PHP 7.4 or newer, clone this repository, and configure these environment variables on your PHP server:
 
-Instead of creating 3 different links for different phones, **you only share ONE link**, and this script handles the rest!
+- `DEEPLINK_IOS_URL`: iOS destination.
+- `DEEPLINK_ANDROID_URL`: Android destination, such as an HTTPS URL or intent URL.
+- `DEEPLINK_FALLBACK_URL`: destination for other visitors.
 
----
+Set all three to destinations you control or trust. Missing values cause a 500 response rather than redirecting to a demo site. Configure variables in your web server or hosting provider; PHP must receive them in its process environment. Do not use untrusted request input as a destination.
 
-## 🧰 What You Need Before You Start
+For a local Windows PowerShell test:
 
-To run this script, you need **PHP 7.4 or newer** installed on your computer or web host. PHP is a language that web servers use to run code before sending a webpage to your screen.
-
-### Do I have PHP?
-Open your terminal (Command Prompt on Windows, or Terminal on Mac) and type:
-```bash
-php -v
-```
-If you see a version number (like `PHP 8.2` or `PHP 8.5`), you are ready to go!
-
-If you **don't** have PHP yet:
-- 🪟 **Windows**: Download and install [XAMPP](https://www.apachefriends.org/) (an all-in-one web server tool) or download PHP from [windows.php.net](https://windows.php.net/download/).
-- 🍏 **Mac**: Install Homebrew and run `brew install php`, or download [MAMP](https://www.mamp.info/).
-- 🐧 **Linux (Ubuntu/Debian)**: Run `sudo apt update && sudo apt install php-cli`.
-
----
-
-## 📂 Project Files
-
-Here is what is inside this repository:
-
-| File | What It Does |
-| :--- | :--- |
-| `sample.php` | The main PHP script that checks the visitor's device and redirects them. |
-| `README.md` | This help guide! |
-| `LICENSE` | The open-source license for this project. |
-
----
-
-## 🛠️ How to Set It Up (Step-by-Step)
-
-### Step 1: Download or Clone this Project
-Download the project as a `.zip` file from GitHub and unzip it, or run:
-```bash
+```powershell
 git clone https://github.com/harindujayakody/deep-link.git
 cd deep-link
-```
-
-### Step 2: Open `sample.php` and Change the Links
-Open `sample.php` in your favorite code editor (like VS Code, Notepad++, or Sublime Text).
-
-At the top of the file, you will see three link variables:
-
-```php
-// 1. Put your iOS app or App Store link here
-$iosUrl = 'https://www.apple.com';
-
-// 2. Put your Android app or Play Store link here
-$androidUrl = 'intent://www.android.com#Intent;package=com.android.chrome;S.browser_fallback_url=https://www.android.com;end';
-
-// 3. Put your fallback web page here (for computers or tablets)
-$fallbackUrl = 'https://www.huawei.com';
-```
-
-Replace those example URLs with your own links, and save the file!
-
----
-
-## 🧪 How to Run and Test It on Your Computer
-
-You don't need a paid website server just to test this! PHP comes with a built-in test server.
-
-### 1. Start the Local Server
-Open your terminal inside the folder containing `sample.php` and run:
-
-```bash
+$env:DEEPLINK_IOS_URL = 'https://example.com/ios'
+$env:DEEPLINK_ANDROID_URL = 'https://example.com/android'
+$env:DEEPLINK_FALLBACK_URL = 'https://example.com/'
 php -S localhost:8000
 ```
 
-Leave this terminal open while testing. Press `Ctrl+C` to stop the server. You will see a message like:
-```text
-Development Server (http://localhost:8000) started
-```
+Open `http://localhost:8000/sample.php` in a browser. Use device emulation with an appropriate User-Agent or a real device to test each branch. Stop the development server with Ctrl+C. For deployment, use a PHP-enabled web host and configure the variables there; the built-in server is for development only.
 
-### 2. Test in Your Web Browser
-Open your browser and visit:
-```text
-http://localhost:8000/sample.php
-```
-
-- If you visit from a **Windows/Mac computer**, it will redirect you to your `$fallbackUrl` (`https://www.huawei.com`).
-- If you want to test how an iPhone or Android sees it without a real phone:
-  1. Press `F12` in Chrome/Edge to open **Developer Tools**.
-  2. Click the **Toggle Device Toolbar** icon (or press `Ctrl + Shift + M`).
-  3. Select an iPhone or Android device from the top drop-down menu. Confirm that device emulation also changes the User-Agent; changing screen size alone does not change the redirect.
-  4. Reload `http://localhost:8000/sample.php`!
-
----
-
-## 🌐 How to Put This Live on the Internet
-
-When you are ready for real users to use your deep link:
-
-1. Use a PHP-enabled web host; static hosting alone cannot execute this script. Upload `sample.php` to your web hosting account (cPanel, Hostinger, Bluehost, AWS, etc.).
-2. You can rename `sample.php` to `index.php` inside a subfolder (like `https://yourwebsite.com/link/`).
-3. Now whenever someone visits `https://yourwebsite.com/link/`, they will instantly be redirected to the right app store or page!
-
----
-
-## ❓ Frequently Asked Questions (FAQ)
-
-<details>
-<summary><b>Q: What is a User-Agent?</b></summary>
-<p>A <code>User-Agent</code> is a text label that your web browser sends to every website you visit. It tells the website what kind of browser and operating system you are using (e.g., <i>"Hi! I'm an iPhone running Safari"</i> or <i>"Hi! I'm a Windows PC running Chrome"</i>).</p>
-</details>
-
-<details>
-<summary><b>Q: Why does the script use HTTP 302 redirect?</b></summary>
-<p>An HTTP <code>302 Found</code> status tells browsers <i>"Redirect the user right now, but don't memorize this forever."</i> This allows you to update your app links in <code>sample.php</code> anytime, and users will immediately get sent to the new link!</p>
-</details>
-
-<details>
-<summary><b>Q: Can I link directly into my app instead of the App Store?</b></summary>
-<p>Yes! If your app supports custom URI schemes (like <code>myapp://profile/123</code>) or iOS Universal Links / Android App Links (like <code>https://myapp.com/open</code>), you can put those directly into <code>$iosUrl</code> or <code>$androidUrl</code>.</p>
-</details>
-
----
-
-## 🤝 Need Help?
-If you run into any issues, feel free to open an **Issue** on GitHub!
-
+Licensed under the [MIT License](LICENSE).
